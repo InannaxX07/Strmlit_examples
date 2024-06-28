@@ -7,7 +7,7 @@ st.title("Streamlit App with Button, Slider, and Image")
 image_scale = st.slider("Adjust Image Scale", min_value=0.5, max_value=2.0, step=0.1, value=1.0)
 
 # Define the image path (replace with your image path)
-image_path = "path/to/your/image.jpg"
+image_path = "https://i.shgcdn.com/d4d32e40-f454-4eee-b0ee-43a03f927768/-/format/auto/-/preview/3000x3000/-/quality/lighter/"
 
 # Load the image
 image = st.cache(lambda path: open(path, "rb").read())(image_path)
