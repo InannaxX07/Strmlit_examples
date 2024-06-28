@@ -1,40 +1,22 @@
-import altair as alt
-import numpy as np
-import pandas as pd
 import streamlit as st
 
-"""
-# Welcome to Streamlit!
+# Set the title of the app
+st.title("Streamlit App with Button, Slider, and Image")
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+# Create a slider with a descriptive label
+image_scale = st.slider("Adjust Image Scale", min_value=0.5, max_value=2.0, step=0.1, value=1.0)
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+# Define the image path (replace with your image path)
+image_path = "path/to/your/image.jpg"
 
-num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+# Load the image
+image = st.cache(lambda path: open(path, "rb").read())(image_path)
 
-indices = np.linspace(0, 1, num_points)
-theta = 2 * np.pi * num_turns * indices
-radius = indices
+# Display the image with caption using HTML
+st.markdown(f"""<center><img src="data:image/jpg;base64,{image.decode('utf-8')}" 
+style="width: {image_scale}*{100}px;" alt="Image"></center>""", unsafe_allow_html=True)
 
-x = radius * np.cos(theta)
-y = radius * np.sin(theta)
+# Add a button (optional functionality can be added here)
+if st.button("Click Me!"):
+    st.write("Button Clicked!")
 
-df = pd.DataFrame({
-    "x": x,
-    "y": y,
-    "idx": indices,
-    "rand": np.random.randn(num_points),
-})
-
-st.altair_chart(alt.Chart(df, height=700, width=700)
-    .mark_point(filled=True)
-    .encode(
-        x=alt.X("x", axis=None),
-        y=alt.Y("y", axis=None),
-        color=alt.Color("idx", legend=None, scale=alt.Scale()),
-        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-    ))
